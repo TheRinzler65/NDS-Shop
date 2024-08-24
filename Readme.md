@@ -2,7 +2,7 @@
 
 ## IMPORTANT !
 
-This is the official homebrew application of [Universal Updater](https://github.com/Universal-Team/Universal-Updater). I am currently examining their code to better understand how to create my own homebrew application while adhering to the [GPLv3](https://github.com/TheRinzler65/NDS-Shop/blob/main/LICENSE) that governs this code. My application will differ in several aspects, including the user interface, icons, etc. However, I plan to retain the store system based on JSON files, which means my application will be partially inspired by their work.
+This is the official homebrew application of [Universal Updater](https://github.com/Universal-Team/Universal-Updater). I am currently examining their code to better understand how to create my own homebrew application while adhering to the [GPLv3](https://github.com/TheRinzler65/NDS-Shop/blob/main/LICENSE) that governs this code. My application will differ in several aspects, including the user interface, icons, etc. However, I plan to retain the store system based on JSON files, which means my application will be inspired by some of their features.
 
 **I want to clarify that I have no intention of appropriating their content. I have deep respect for their work and encourage you to do the same. If you use or modify their code, it is essential to:**
 
