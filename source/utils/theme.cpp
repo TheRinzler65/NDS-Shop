@@ -56,7 +56,7 @@ nlohmann::json Theme::InitWithDefaultColors(const std::string &ThemePath) {
 			{ "BGColor", "#4B4B4B" },
 			{ "BarOutline", "#FFFFFF" },
 			{ "TextColor", "#FFFFFF" },
-			{ "EntryBar", "#00C9F" },
+			{ "EntryBar", "#00C9FF" },
 			{ "EntryOutline", "#FFFFFF" },
 			{ "BoxInside", "#4B4B4B" },
 			{ "BoxSelected", "#00C9FF" },
