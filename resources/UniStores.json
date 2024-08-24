@@ -46,5 +46,11 @@
 		"author": "Pk11",
 		"url": "https://github.com/Epicpkmn11/WordleDS/raw/mods/unistore/wordle-ds.unistore",
 		"description": "Mods for Wordle DS"
+	},
+	"NDS-Shop": {
+		"title": "NDS-Shop",
+		"author": "Rinzler",
+		"url": "https://github.com/TheRinzler65/NDS-Shop-db/raw/main/docs/unistore/nds-shop.unistore",
+		"description": "NDS-Shop - An online database of DS games in Universal-Updater"
 	}
 }

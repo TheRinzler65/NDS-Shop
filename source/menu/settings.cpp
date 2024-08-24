@@ -592,8 +592,8 @@ static void LanguageLogic(int &page, int &selection, int &sPos) {
 
 		/* Check if language needs a custom font. */
 		if (l == "uk") {
-			if (access("sdmc:/3ds/Universal-Updater/font.bcfnt", F_OK) != 0) {
-				ScriptUtils::downloadFile("https://github.com/Universal-Team/extras/raw/master/files/universal-updater.bcfnt", "sdmc:/3ds/Universal-Updater/font.bcfnt", Lang::get("DOWNLOADING_COMPATIBLE_FONT"), true);
+			if (access("sdmc:/3ds/NDS-Shop/font.bcfnt", F_OK) != 0) {
+				ScriptUtils::downloadFile("https://github.com/Universal-Team/extras/raw/master/files/universal-updater.bcfnt", "sdmc:/3ds/NDS-Shop/font.bcfnt", Lang::get("DOWNLOADING_COMPATIBLE_FONT"), true);
 				Init::UnloadFont();
 			}
 
@@ -626,8 +626,8 @@ static void LanguageLogic(int &page, int &selection, int &sPos) {
 
 					/* Check if language needs a custom font. */
 					if (l == "uk") {
-						if (access("sdmc:/3ds/Universal-Updater/font.bcfnt", F_OK) != 0) {
-							ScriptUtils::downloadFile("https://github.com/Universal-Team/extras/raw/master/files/universal-updater.bcfnt", "sdmc:/3ds/Universal-Updater/font.bcfnt", Lang::get("DOWNLOADING_COMPATIBLE_FONT"), true);
+						if (access("sdmc:/3ds/NDS-Shop/font.bcfnt", F_OK) != 0) {
+							ScriptUtils::downloadFile("https://github.com/Universal-Team/extras/raw/master/files/universal-updater.bcfnt", "sdmc:/3ds/NDS-Shop/font.bcfnt", Lang::get("DOWNLOADING_COMPATIBLE_FONT"), true);
 							Init::UnloadFont();
 						}
 
@@ -658,7 +658,7 @@ static void LanguageLogic(int &page, int &selection, int &sPos) {
 
 		if (touching(touch, langButtons[6])) {
 			/* Download Font. */
-			ScriptUtils::downloadFile("https://github.com/Universal-Team/extras/raw/master/files/universal-updater.bcfnt", "sdmc:/3ds/Universal-Updater/font.bcfnt", Lang::get("DOWNLOADING_COMPATIBLE_FONT"), true);
+			ScriptUtils::downloadFile("https://github.com/Universal-Team/extras/raw/master/files/universal-updater.bcfnt", "sdmc:/3ds/NDS-Shop/font.bcfnt", Lang::get("DOWNLOADING_COMPATIBLE_FONT"), true);
 			config->customfont(true);
 			Init::UnloadFont();
 			Init::LoadFont();

@@ -35,8 +35,8 @@
 #include <3ds.h>
 #include <vector>
 
-#define _STORE_PATH "sdmc:/3ds/Universal-Updater/stores/"
-#define _META_PATH "sdmc:/3ds/Universal-Updater/MetaData.json"
+#define _STORE_PATH "sdmc:/3ds/NDS-Shop/stores/"
+#define _META_PATH "sdmc:/3ds/NDS-Shop/MetaData.json"
 #define _THEME_AMOUNT 2
 #define _UNISTORE_VERSION 4
 

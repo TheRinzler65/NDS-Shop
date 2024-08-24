@@ -57,7 +57,7 @@ Meta::Meta() {
 	Import the old Metadata of the 'updates.json' file.
 */
 void Meta::ImportMetadata() {
-	if (access("sdmc:/3ds/Universal-Updater/updates.json", F_OK) != 0) {
+	if (access("sdmc:/3ds/NDS-Shop/updates.json", F_OK) != 0) {
 		config->metadata(false);
 		return; // Not found.
 	}
@@ -65,7 +65,7 @@ void Meta::ImportMetadata() {
 	Msg::DisplayMsg(Lang::get("FETCHING_METADATA"));
 
 	nlohmann::json oldJson;
-	FILE *old = fopen("sdmc:/3ds/Universal-Updater/updates.json", "rt");
+	FILE *old = fopen("sdmc:/3ds/NDS-Shop/updates.json", "rt");
 	if (old) {
 		oldJson = nlohmann::json::parse(old, nullptr, false);
 		fclose(old);
