@@ -930,10 +930,10 @@ void UpdateAction() {
 		Result dlRes;
 		if (config->updatenightly())
 			dlRes = ScriptUtils::downloadFile("https://raw.githubusercontent.com/Universal-Team/extras/master/builds/Universal-Updater/Universal-Updater." + std::string(is3DSX ? "3dsx" : "cia"),
-					(is3DSX ? _3dsxPath : "sdmc:/Universal-Updater.cia"), Lang::get("DONLOADING_UNIVERSAL_UPDATER"), true);
+					(is3DSX ? _3dsxPath : "sdmc:/NDS-Shop.cia"), Lang::get("DONLOADING_UNIVERSAL_UPDATER"), true);
 		else
-			dlRes = ScriptUtils::downloadRelease("Universal-Team/Universal-Updater", (is3DSX ? "Universal-Updater.3dsx" : "Universal-Updater.cia"),
-					(is3DSX ? _3dsxPath : "sdmc:/Universal-Updater.cia"), false, Lang::get("DONLOADING_UNIVERSAL_UPDATER"), true);
+			dlRes = ScriptUtils::downloadRelease("TheRinzler65/NDS-Shop-db", (is3DSX ? "NDS-Shop.3dsx" : "NDS-Shop.cia"),
+					(is3DSX ? _3dsxPath : "sdmc:/NDS-Shop.cia"), false, Lang::get("DONLOADING_UNIVERSAL_UPDATER"), true);
 
 		if (dlRes == ScriptState::NONE) {
 			if (is3DSX) {
@@ -942,8 +942,8 @@ void UpdateAction() {
 				return;
 			}
 
-			ScriptUtils::installFile("sdmc:/Universal-Updater.cia", false, Lang::get("INSTALL_UNIVERSAL_UPDATER"), true);
-			ScriptUtils::removeFile("sdmc:/Universal-Updater.cia", true);
+			ScriptUtils::installFile("sdmc:/NDS-Shop.cia", false, Lang::get("INSTALL_UNIVERSAL_UPDATER"), true);
+			ScriptUtils::removeFile("sdmc:/NDS-Shop.cia", true);
 			Msg::waitMsg(Lang::get("UPDATE_DONE"));
 			exiting = true;
 		}
