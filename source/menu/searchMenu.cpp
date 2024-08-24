@@ -127,6 +127,20 @@ void StoreUtils::DrawSearchMenu(const std::vector<bool> &searchIncludes, const s
 	Gui::DrawString(SearchMenu[13].x + 8, SearchMenu[13].y, 0.4f, UIThemes->TextColor(), "OR", 0, 0, font);
 }
 
+/*
+	Search + Filter Handle.
+	Here you can..
+
+	- Filter your apps for the marks.
+	- Search the UniStore.
+	- Include stuff into the search.
+
+	std::vector<bool> &searchIncludes: Reference to the searchIncludes.
+	std::string &searchResult: Reference to the searchResult.
+	int &marks: Reference to the mark flags.
+	bool &updateFilter: Reference to the update filter.
+	bool &isAND: Reference to isAND boolean for AND / OR mode.
+*/
 void StoreUtils::SearchHandle(std::vector<bool> &searchIncludes, std::string &searchResult, int &marks, bool &updateFilter, bool ascending, SortType sorttype, bool &isAND) {
 	/* Checkboxes. */
 	if (hDown & KEY_TOUCH) {

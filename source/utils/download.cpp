@@ -461,9 +461,14 @@ void doneMsg(void) { Msg::waitMsg(Lang::get("DONE")); }
 
 void notConnectedMsg(void) { Msg::waitMsg(Lang::get("CONNECT_WIFI")); }
 
+/*
+	Return, if an update is available.
 
+	const std::string &URL: Const Reference to the URL of the UniStore.
+	int revCurrent: The current Revision. (-1 if unused)
+*/
 bool IsUpdateAvailable(const std::string &URL, int revCurrent) {
-	Msg::DisplayMsg(Lang::get("CHECK_STORE_UPDATES"));
+	Msg::DisplayMsg(Lang::get("CHECK_UNISTORE_UPDATES"));
 	Result ret = 0;
 
 	void *socubuf = memalign(0x1000, 0x100000);
@@ -534,11 +539,20 @@ bool IsUpdateAvailable(const std::string &URL, int revCurrent) {
 	return false;
 }
 
-bool DownloadStore(const std::string &URL, int currentRev, std::string &fl, bool isDownload, bool isUDB) {
+/*
+	Download a UniStore and return, if revision is higher than current.
+
+	const std::string &URL: Const Reference to the URL of the UniStore.
+	int currentRev: Const Reference to the current Revision. (-1 if unused)
+	std::string &fl: Output for the filepath.
+	bool isDownload: If download or updating.
+	bool isUDB: If Universal-DB download or not.
+*/
+bool DownloadUniStore(const std::string &URL, int currentRev, std::string &fl, bool isDownload, bool isUDB) {
 	if (isUDB) Msg::DisplayMsg(Lang::get("DOWNLOADING_UNIVERSAL_DB"));
 	else {
-		if (currentRev > -1) Msg::DisplayMsg(Lang::get("CHECK_STORE_UPDATES"));
-		else Msg::DisplayMsg((isDownload ? Lang::get("DOWNLOADING_STORE") : Lang::get("UPDATING_STORE")));
+		if (currentRev > -1) Msg::DisplayMsg(Lang::get("CHECK_UNISTORE_UPDATES"));
+		else Msg::DisplayMsg((isDownload ? Lang::get("DOWNLOADING_UNISTORE") : Lang::get("UPDATING_UNISTORE")));
 	}
 
 	if (URL.length() > 4) {
@@ -592,6 +606,7 @@ bool DownloadStore(const std::string &URL, int currentRev, std::string &fl, bool
 			nlohmann::json parsedAPI = nlohmann::json::parse(result_buf);
 
 			if (parsedAPI.contains("storeInfo") && parsedAPI.contains("storeContent")) {
+				/* Ensure, version == _UNISTORE_VERSION. */
 				if (parsedAPI["storeInfo"].contains("version") && parsedAPI["storeInfo"]["version"].is_number()) {
 					if (parsedAPI["storeInfo"]["version"] == 3 || parsedAPI["storeInfo"]["version"] == 4) {
 						if (currentRev > -1) {
@@ -600,7 +615,7 @@ bool DownloadStore(const std::string &URL, int currentRev, std::string &fl, bool
 								const int rev = parsedAPI["storeInfo"]["revision"];
 
 								if (rev > currentRev) {
-									Msg::DisplayMsg(Lang::get("UPDATING_STORE"));
+									Msg::DisplayMsg(Lang::get("UPDATING_UNISTORE"));
 									if (parsedAPI["storeInfo"].contains("file") && parsedAPI["storeInfo"]["file"].is_string()) {
 										fl = parsedAPI["storeInfo"]["file"];
 
@@ -654,16 +669,16 @@ bool DownloadStore(const std::string &URL, int currentRev, std::string &fl, bool
 						}
 
 					} else if (parsedAPI["storeInfo"]["version"] < 3) {
-						Msg::waitMsg(Lang::get("STORE_TOO_OLD"));
+						Msg::waitMsg(Lang::get("UNISTORE_TOO_OLD"));
 
-					} else if (parsedAPI["storeInfo"]["version"] > _STORE_VERSION) {
-						Msg::waitMsg(Lang::get("STORE_TOO_NEW"));
+					} else if (parsedAPI["storeInfo"]["version"] > _UNISTORE_VERSION) {
+						Msg::waitMsg(Lang::get("UNISTORE_TOO_NEW"));
 
 					}
 				}
 
 			} else {
-				Msg::waitMsg(Lang::get("STORE_INVALID_ERROR"));
+				Msg::waitMsg(Lang::get("UNISTORE_INVALID_ERROR"));
 			}
 		}
 	}
@@ -946,9 +961,11 @@ static StoreList fetch(const std::string &entry, nlohmann::json &js) {
 
 	return store;
 }
-
+/*
+	Fetch store list for available UniStores.
+*/
 std::vector<StoreList> FetchStores() {
-	Msg::DisplayMsg(Lang::get("FETCHING_RECOMMENDED_STORES"));
+	Msg::DisplayMsg(Lang::get("FETCHING_RECOMMENDED_UNISTORES"));
 	std::vector<StoreList> stores = { };
 
 	Result ret = 0;

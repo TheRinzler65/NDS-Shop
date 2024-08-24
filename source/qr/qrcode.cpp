@@ -168,7 +168,7 @@ void QRCode::drawThread() {
 			GFX::DrawBottom();
 			Gui::Draw_Rect(0, 0, 320, 25, UIThemes->EntryBar());
 			Gui::Draw_Rect(0, 25, 320, 1, UIThemes->EntryOutline());
-			Gui::DrawStringCentered(0, 2, 0.6, UIThemes->TextColor(), Lang::get("RECOMMENDED_STORES"), 310, 0, font);
+			Gui::DrawStringCentered(0, 2, 0.6, UIThemes->TextColor(), Lang::get("RECOMMENDED_UNISTORES"), 310, 0, font);
 
 			for(int i = 0; i < 6 && i < (int)this->stores.size(); i++) {
 				if (this->sPos + i == this->selectedStore) Gui::Draw_Rect(mainButtons[i].x, mainButtons[i].y, mainButtons[i].w, mainButtons[i].h, UIThemes->MarkSelected());

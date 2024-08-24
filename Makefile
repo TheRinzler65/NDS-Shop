@@ -91,17 +91,17 @@ endif
 #---------------------------------------------------------------------------------
 TARGET		:=	NDS-Shop
 BUILD		:=	build
-NDSSHOP		:=	Universal-Core
-SOURCES		:=	$(NDSSHOP) source source/download source/gui source/lang source/menu source/overlays \
+UNIVCORE	:=	Universal-Core
+SOURCES		:=	$(UNIVCORE) source source/download source/gui source/lang source/menu source/overlays \
 							source/qr source/screens source/store source/utils
 DATA		:=	data
-INCLUDES	:=	$(NDSSHOP) include include/download include/gui include/lang include/overlays include/qr include/screens \
+INCLUDES	:=	$(UNIVCORE) include include/download include/gui include/lang include/overlays include/qr include/screens \
 							include/store include/utils
 GRAPHICS	:=	assets/gfx
 ROMFS		:=	romfs
 GFXBUILD	:=	$(ROMFS)/gfx
-APP_AUTHOR	:=	NDS-Shop-Team
-APP_DESCRIPTION :=	A NDS games store for 3DS
+APP_AUTHOR	:=	Rinzler
+APP_DESCRIPTION := A Alternative NDSi-Shop for Nintendo 3DS
 ICON		:=	app/icon.png
 BNR_IMAGE	:=	app/banner.png
 BNR_AUDIO	:=	app/BannerAudio.wav

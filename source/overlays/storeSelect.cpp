@@ -53,6 +53,11 @@ static const std::vector<Structs::ButtonPos> mainButtons = {
 	{ 4, 0, 24, 24 } // Back.
 };
 
+/*
+	Delete a store.. including the Spritesheets, if found.
+
+	const std::string &file: The file of the UniStore.
+*/
 static void DeleteStore(const std::string &file) {
 	nlohmann::json storeJson;
 	FILE *temp = fopen((std::string(_STORE_PATH) + file).c_str(), "rt");
@@ -63,6 +68,7 @@ static void DeleteStore(const std::string &file) {
 	if (storeJson.is_discarded())
 		storeJson = {};
 
+	/* Check, if Spritesheet exist on UniStore. */
 	if (storeJson["storeInfo"].contains("sheet") && storeJson["storeInfo"]["sheet"].is_array()) {
 		const std::vector<std::string> sht = storeJson["storeInfo"]["sheet"].get<std::vector<std::string>>();
 
@@ -90,15 +96,18 @@ static void DeleteStore(const std::string &file) {
 		}
 	}
 
-	deleteFile((std::string(_STORE_PATH) + file).c_str());
+	deleteFile((std::string(_STORE_PATH) + file).c_str()); // Now delete UniStore.
 }
 
+/*
+	Download a store.. including the SpriteSheets, if found.
+*/
 static bool DownloadStore() {
 	bool doSheet = false;
 	std::string file = "";
 
 	const std::string URL = QR_Scanner::StoreHandle();
-	if (URL != "") doSheet = DownloadStore(URL, -1, file, true);
+	if (URL != "") doSheet = DownloadUniStore(URL, -1, file, true);
 
 	if (doSheet) {
 		nlohmann::json storeJson;
@@ -154,7 +163,7 @@ static bool UpdateStore(const std::string &URL) {
 	bool doSheet = false;
 	std::string file = "";
 
-	if (URL != "") doSheet = DownloadStore(URL, -1, file, false);
+	if (URL != "") doSheet = DownloadUniStore(URL, -1, file, false);
 
 	if (doSheet) {
 		nlohmann::json storeJson;
@@ -205,11 +214,20 @@ static bool UpdateStore(const std::string &URL) {
 	return doSheet;
 }
 
+/*
+	This is the UniStore Manage Handle.
+	Here you can..
+
+	- Delete a UniStore.
+	- Download / Add a UniStore.
+	- Check for Updates for a UniStore.
+	- Switch the UniStore.
+*/
 void Overlays::SelectStore() {
 	bool doOut = false;
 	int selection = 0, sPos = 0;
 
-	std::vector<StoreInfo> info = GetStoreInfo(_STORE_PATH);
+	std::vector<UniStoreInfo> info = GetUniStoreInfo(_STORE_PATH);
 
 	while(!doOut) {
 		Gui::clearTextBufs();
@@ -234,7 +252,7 @@ void Overlays::SelectStore() {
 				Gui::DrawStringCentered(0, 70, 0.5f, UIThemes->TextColor(), info[selection].Description, 380, 130, font, C2D_WordWrap);
 
 			} else {
-				Gui::DrawStringCentered(0, 1, 0.7f, UIThemes->TextColor(), Lang::get("INVALID_STORE"), 390, 0, font);
+				Gui::DrawStringCentered(0, 1, 0.7f, UIThemes->TextColor(), Lang::get("INVALID_UNISTORE"), 390, 0, font);
 			}
 
 			Gui::DrawString(10, 200, 0.4, UIThemes->TextColor(), "- " + Lang::get("ENTRIES") + ": " + std::to_string(info[selection].StoreSize), 150, 0, font);
@@ -247,7 +265,7 @@ void Overlays::SelectStore() {
 			Gui::Draw_Rect(0, 0, 320, 25, UIThemes->BarColor());
 			Gui::Draw_Rect(0, 25, 320, 1, UIThemes->BarOutline());
 			GFX::DrawIcon(sprites_arrow_idx, mainButtons[9].x, mainButtons[9].y, UIThemes->TextColor());
-			Gui::DrawStringCentered(0, 2, 0.6, UIThemes->TextColor(), Lang::get("SELECT_STORE_2"), 310, 0, font);
+			Gui::DrawStringCentered(0, 2, 0.6, UIThemes->TextColor(), Lang::get("SELECT_UNISTORE_2"), 310, 0, font);
 
 			for(int i = 0; i < 6 && i < (int)info.size(); i++) {
 				if (sPos + i == selection) Gui::Draw_Rect(mainButtons[i].x, mainButtons[i].y, mainButtons[i].w, mainButtons[i].h, UIThemes->MarkSelected());
@@ -293,9 +311,9 @@ void Overlays::SelectStore() {
 				if (info[selection].File != "") { // Ensure to check for this.
 					if (!(info[selection].File.find("/") != std::string::npos)) {
 						/* Load selected one. */
-						if (info[selection].Version == -1) Msg::waitMsg(Lang::get("STORE_INVALID_ERROR"));
-						else if (info[selection].Version < 3) Msg::waitMsg(Lang::get("STORE_TOO_OLD"));
-						else if (info[selection].Version > _STORE_VERSION) Msg::waitMsg(Lang::get("STORE_TOO_NEW"));
+						if (info[selection].Version == -1) Msg::waitMsg(Lang::get("UNISTORE_INVALID_ERROR"));
+						else if (info[selection].Version < 3) Msg::waitMsg(Lang::get("UNISTORE_TOO_OLD"));
+						else if (info[selection].Version > _UNISTORE_VERSION) Msg::waitMsg(Lang::get("UNISTORE_TOO_NEW"));
 						else {
 							config->lastStore(info[selection].FileName);
 							StoreUtils::store = std::make_unique<Store>(_STORE_PATH + info[selection].FileName, info[selection].FileName);
@@ -315,9 +333,9 @@ void Overlays::SelectStore() {
 					if (touching(touch, mainButtons[i])) {
 						if (i + sPos < (int)info.size() && info[i + sPos].File != "") { // Ensure to check for this.
 							if (!(info[i + sPos].File.find("/") != std::string::npos)) {
-								if (info[i + sPos].Version == -1) Msg::waitMsg(Lang::get("STORE_INVALID_ERROR"));
-								else if (info[i + sPos].Version < 3) Msg::waitMsg(Lang::get("STORE_TOO_OLD"));
-								else if (info[i + sPos].Version > _STORE_VERSION) Msg::waitMsg(Lang::get("STORE_TOO_NEW"));
+								if (info[i + sPos].Version == -1) Msg::waitMsg(Lang::get("UNISTORE_INVALID_ERROR"));
+								else if (info[i + sPos].Version < 3) Msg::waitMsg(Lang::get("UNISTORE_TOO_OLD"));
+								else if (info[i + sPos].Version > _UNISTORE_VERSION) Msg::waitMsg(Lang::get("UNISTORE_TOO_NEW"));
 								else {
 									config->lastStore(info[i + sPos].FileName);
 									StoreUtils::store = std::make_unique<Store>(_STORE_PATH + info[i + sPos].FileName, info[i + sPos].FileName);
@@ -334,22 +352,22 @@ void Overlays::SelectStore() {
 				}
 			}
 
-			/* Delete Store. */
+			/* Delete UniStore. */
 			if ((hidKeysDown() & KEY_X) || (hidKeysDown() & KEY_TOUCH && touching(touch, mainButtons[6]))) {
 				if (info[selection].FileName != "") {
 					DeleteStore(info[selection].FileName);
 					selection = 0;
-					info = GetStoreInfo(_STORE_PATH);
+					info = GetUniStoreInfo(_STORE_PATH);
 				}
 			}
 
-			/* Download latest Store. */
+			/* Download latest UniStore. */
 			if ((hidKeysDown() & KEY_START) || (hidKeysDown() & KEY_TOUCH && touching(touch, mainButtons[7]))) {
 				if (checkWifiStatus()) {
 					if (info[selection].URL != "") {
 						if (UpdateStore(info[selection].URL)) {
 							selection = 0;
-							info = GetStoreInfo(_STORE_PATH);
+							info = GetUniStoreInfo(_STORE_PATH);
 						}
 					}
 
@@ -362,11 +380,12 @@ void Overlays::SelectStore() {
 			else if (selection > sPos + 6 - 1) sPos = selection - 6 + 1;
 		}
 
+		/* UniStore QR Code / URL Download. */
 		if ((hidKeysDown() & KEY_Y) || (hidKeysDown() & KEY_TOUCH && touching(touch, mainButtons[8]))) {
 			if (checkWifiStatus()) {
 				if (DownloadStore()) {
 					selection = 0;
-					info = GetStoreInfo(_STORE_PATH);
+					info = GetUniStoreInfo(_STORE_PATH);
 				}
 
 			} else {

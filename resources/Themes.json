@@ -6,7 +6,7 @@
 		"BoxInside": "#1C213A",
 		"BoxSelected": "#6C829B",
 		"BoxUnselected": "#000000",
-		"Description": "NDS-Shop's Theme.\n\nBy: Rinzler",
+		"Description": "Universal-Updater's default Theme.\n\nBy: Universal-Team",
 		"DownListPrev": "#1C213A",
 		"EntryBar": "#324962",
 		"EntryOutline": "#191E35",
@@ -20,4 +20,5 @@
 		"SideBarSelected": "#6C829B",
 		"SideBarUnselected": "#4D6580",
 		"TextColor": "#FFFFFF"
+	}
 }

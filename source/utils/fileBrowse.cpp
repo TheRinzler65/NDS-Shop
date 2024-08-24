@@ -88,8 +88,14 @@ void getDirectoryContents(std::vector<DirEntry> &dirContents) {
 	getDirectoryContents(dirContents, {});
 }
 
-StoreInfo GetInfo(const std::string &file, const std::string &fileName) {
-	StoreInfo Temp = { "", "", "", "", fileName, "", -1, -1, -1 };
+/*
+	Return UniStore info.
+
+	const std::string &file: Const Reference to the path of the file.
+	const std::string &fieName: Const Reference to the filename, without path.
+*/
+UniStoreInfo GetInfo(const std::string &file, const std::string &fileName) {
+	UniStoreInfo Temp = { "", "", "", "", fileName, "", -1, -1, -1 }; // Title, Author, URL, File (to check if no slash exist), FileName, Desc, Version, Revision, entries.
 
 	if (fileName.length() > 4) {
 		if(*(u32*)(fileName.c_str() + fileName.length() - 4) == (1886349435 & ~(1 << 3))) return Temp;
@@ -140,17 +146,23 @@ StoreInfo GetInfo(const std::string &file, const std::string &fileName) {
 	return Temp;
 }
 
-std::vector<StoreInfo> GetStoreInfo(const std::string &path) {
-	std::vector<StoreInfo> info;
+/*
+	Return UniStore info vector.
+
+	const std::string &path: Const Reference to the path, where to check.
+*/
+std::vector<UniStoreInfo> GetUniStoreInfo(const std::string &path) {
+	std::vector<UniStoreInfo> info;
 	std::vector<DirEntry> dirContents;
 
 	if (access(path.c_str(), F_OK) != 0) return {}; // Folder does not exist.
 
 	chdir(path.c_str());
-	getDirectoryContents(dirContents, { "ndsshop" });
+	getDirectoryContents(dirContents, { "unistore" });
 
 	for(uint i = 0; i < dirContents.size(); i++) {
-		if ((path + dirContents[i].name).find(".ndsshop") != std::string::npos) {
+		/* Make sure to ONLY push .unistores, and no folders. Avoids crashes in that case too. */
+		if ((path + dirContents[i].name).find(".unistore") != std::string::npos) {
 			info.push_back( GetInfo(path + dirContents[i].name, dirContents[i].name) );
 		}
 	}

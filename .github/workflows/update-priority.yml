@@ -1,0 +1,50 @@
+name: Update priority sources
+
+# Run hourly except when the real update runs
+on:
+  schedule:
+    - cron: 0 1-5,7-11,13-17,19-23 * * *
+  push:
+    branches: [ master ]
+    paths: [ source/apps/*, source/generate.py, source/requirements.txt, .github/workflows/update-priority.yml ]
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    container: universalteam/db
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Delete old pages
+      run: rm -rf docs/_3ds/* docs/_ds/*
+
+    - name: Run generate.py
+      run: |
+        export PATH=$PATH:/opt/devkitpro/tools/bin
+        python3 source/generate.py source/apps docs --token ${{ secrets.GITHUB_TOKEN }} --priority
+
+    - name: Pull origin
+      run: git pull origin master --ff-only # Pull origin in case a commit has been done while updating
+
+    - name: Push changes
+      run: |
+        git config user.email "flamekat54@aol.com"
+        git config user.name "TWLBot"
+
+        echo "machine github.com" > "$HOME/.netrc"
+        echo "  login TWLBot" >> "$HOME/.netrc"
+        echo "  password ${{ secrets.GITHUB_TOKEN }}" >> "$HOME/.netrc"
+
+        echo "machine api.github.com" >> "$HOME/.netrc"
+        echo "  login TWLBot" >> "$HOME/.netrc"
+        echo "  password ${{ secrets.GITHUB_TOKEN }}" >> "$HOME/.netrc"
+
+        git checkout master
+        if git diff --name-only | grep full.json; then
+          git stage .
+          if git commit -m "Update priority sources"; then
+            git push origin master
+          fi
+        fi

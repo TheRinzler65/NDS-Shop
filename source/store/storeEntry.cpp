@@ -44,7 +44,7 @@ StoreEntry::StoreEntry(const std::unique_ptr<Store> &store, const std::unique_pt
 	this->Console = StringUtils::FetchStringsFromVector(store->GetConsoleEntry(index));
 	this->LastUpdated = store->GetLastUpdatedEntry(index);
 	this->License = store->GetLicenseEntry(index);
-	this->MarkString = StringUtils::GetMarkString(meta->GetMarks(store->GetStoreTitle(), this->Title));
+	this->MarkString = StringUtils::GetMarkString(meta->GetMarks(store->GetUniStoreTitle(), this->Title));
 
 	this->Icon = store->GetIconEntry(index);
 	this->SheetIndex = 0;
@@ -53,8 +53,8 @@ StoreEntry::StoreEntry(const std::unique_ptr<Store> &store, const std::unique_pt
 	this->FullCategory = store->GetCategoryIndex(index);
 	this->FullConsole = store->GetConsoleEntry(index);
 
-	this->UpdateAvailable = meta->UpdateAvailable(store->GetStoreTitle(), this->Title, store->GetLastUpdatedEntry(index));
-	this->Marks = meta->GetMarks(store->GetStoreTitle(), this->Title);
+	this->UpdateAvailable = meta->UpdateAvailable(store->GetUniStoreTitle(), this->Title, store->GetLastUpdatedEntry(index));
+	this->Marks = meta->GetMarks(store->GetUniStoreTitle(), this->Title);
 
 	const std::vector<std::string> entries = store->GetDownloadList(index);
 

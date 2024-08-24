@@ -35,7 +35,13 @@ extern C2D_SpriteSheet sprites;
 extern bool checkWifiStatus();
 static bool firstStart = true;
 
+/*
+	Initialize a Store.
 
+	const std::string &file: The UniStore file.
+	const std::string &file2: The UniStore file.. without full path.
+	bool ARGMode: If Argument mode.
+*/
 Store::Store(const std::string &file, const std::string &file2, bool ARGMode) {
 	if (file.length() > 4) {
 		if(*(u32*)(file.c_str() + file.length() - 4) == (0xE0DED0E << 3 | (2 + 1))) {
@@ -55,12 +61,18 @@ Store::Store(const std::string &file, const std::string &file2, bool ARGMode) {
 	}
 };
 
+/*
+	Update an UniStore, including SpriteSheet, if revision increased.
+
+	const std::string &file: Const Reference to the fileName.
+*/
 void Store::update(const std::string &file) {
 	bool doSheet = false;
 	this->LoadFromFile(file);
 
 	int rev = -1;
 
+	/* Only do this, if valid. */
 	if (this->valid) {
 		if (this->storeJson["storeInfo"].contains("revision") && this->storeJson["storeInfo"]["revision"].is_number()) {
 			rev = this->storeJson["storeInfo"]["revision"];
@@ -88,7 +100,7 @@ void Store::update(const std::string &file) {
 
 							if (URL != "") {
 								std::string tmp = "";
-								doSheet = DownloadStore(URL, rev, tmp);
+								doSheet = DownloadUniStore(URL, rev, tmp);
 							}
 
 						} else {
@@ -98,6 +110,7 @@ void Store::update(const std::string &file) {
 				}
 
 				if (doSheet) {
+					/* SpriteSheet Array. */
 					if (this->storeJson["storeInfo"].contains("sheetURL") && this->storeJson["storeInfo"]["sheetURL"].is_array()) {
 						if (this->storeJson["storeInfo"].contains("sheet") && this->storeJson["storeInfo"]["sheet"].is_array()) {
 							const std::vector<std::string> locs = this->storeJson["storeInfo"]["sheetURL"].get<std::vector<std::string>>();
@@ -119,6 +132,7 @@ void Store::update(const std::string &file) {
 							}
 						}
 
+						/* Single SpriteSheet (No array). */
 					} else if (this->storeJson["storeInfo"].contains("sheetURL") && this->storeJson["storeInfo"]["sheetURL"].is_string()) {
 						if (this->storeJson["storeInfo"].contains("sheet") && this->storeJson["storeInfo"]["sheet"].is_string()) {
 							const std::string fl = this->storeJson["storeInfo"]["sheetURL"];
@@ -142,10 +156,14 @@ void Store::update(const std::string &file) {
 	}
 }
 
-
+/*
+	Unload all SpriteSheets on Destructor.
+*/
 Store::~Store() { this->unloadSheets(); };
 
-
+/*
+	Unload all SpriteSheets.
+*/
 void Store::unloadSheets() {
 	if (this->valid) {
 		if (this->sheets.size() > 0) {
@@ -158,6 +176,9 @@ void Store::unloadSheets() {
 	}
 }
 
+/*
+	Load all SpriteSheets.
+*/
 void Store::loadSheets() {
 	if (this->valid) {
 		if (this->storeJson["storeInfo"].contains("sheet")) {
@@ -196,7 +217,11 @@ void Store::loadSheets() {
 }
 
 
+/*
+	Load a UniStore from a file.
 
+	const std::string &file: The file of the UniStore.
+*/
 void Store::LoadFromFile(const std::string &file) {
 	FILE *in = fopen(file.c_str(), "rt");
 	if (!in) {
@@ -212,20 +237,22 @@ void Store::LoadFromFile(const std::string &file) {
 	/* Check, if valid. */
 	if (this->storeJson.contains("storeInfo") && this->storeJson.contains("storeContent")) {
 		if (this->storeJson["storeInfo"].contains("version") && this->storeJson["storeInfo"]["version"].is_number()) {
-			if (this->storeJson["storeInfo"]["version"] < 3) Msg::waitMsg(Lang::get("STORE_TOO_OLD"));
-			else if (this->storeJson["storeInfo"]["version"] > _STORE_VERSION) Msg::waitMsg(Lang::get("STORE_TOO_NEW"));
-			else if (this->storeJson["storeInfo"]["version"] == 3 || this->storeJson["storeInfo"]["version"] == _STORE_VERSION) {
+			if (this->storeJson["storeInfo"]["version"] < 3) Msg::waitMsg(Lang::get("UNISTORE_TOO_OLD"));
+			else if (this->storeJson["storeInfo"]["version"] > _UNISTORE_VERSION) Msg::waitMsg(Lang::get("UNISTORE_TOO_NEW"));
+			else if (this->storeJson["storeInfo"]["version"] == 3 || this->storeJson["storeInfo"]["version"] == _UNISTORE_VERSION) {
 				this->valid = true;
 			}
 		}
 
 	} else {
-		Msg::waitMsg(Lang::get("STORE_INVALID_ERROR"));
+		Msg::waitMsg(Lang::get("UNISTORE_INVALID_ERROR"));
 	}
 }
 
-
-std::string Store::GetStoreTitle() const {
+/*
+	Return the Title of the UniStore.
+*/
+std::string Store::GetUniStoreTitle() const {
 	if (this->valid) {
 		if (this->storeJson["storeInfo"].contains("title")) return this->storeJson["storeInfo"]["title"];
 	}
@@ -233,6 +260,11 @@ std::string Store::GetStoreTitle() const {
 	return "";
 }
 
+/*
+	Return the Title of an index.
+
+	int index: The index.
+*/
 std::string Store::GetTitleEntry(int index) const {
 	if (!this->valid) return "";
 	if (index > (int)this->storeJson["storeContent"].size() - 1) return ""; // Empty.

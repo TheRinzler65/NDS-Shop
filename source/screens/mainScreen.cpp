@@ -35,7 +35,7 @@
 
 extern int fadeAlpha;
 
-extern StoreInfo GetInfo(const std::string &file, const std::string &fileName);
+extern UniStoreInfo GetInfo(const std::string &file, const std::string &fileName);
 extern void notConnectedMsg();
 extern void DisplayChangelog();
 
@@ -50,46 +50,46 @@ MainScreen::MainScreen() {
 	StoreUtils::meta = std::make_unique<Meta>();
 
 	/* Check if lastStore is accessible. */
-	if (config->lastStore() != "nds-shop.ndsshop" && config->lastStore() != "") {
+	if (config->lastStore() != "universal-db.unistore" && config->lastStore() != "") {
 		if (access((_STORE_PATH + config->lastStore()).c_str(), F_OK) != 0) {
-			config->lastStore("nds-shop.ndsshop");
+			config->lastStore("universal-db.unistore");
 
 		} else {
 			/* check version and file here. */
-			const StoreInfo info = GetInfo((_STORE_PATH + config->lastStore()), config->lastStore());
+			const UniStoreInfo info = GetInfo((_STORE_PATH + config->lastStore()), config->lastStore());
 
-			if (info.Version != 3 && info.Version != _STORE_VERSION) {
-				config->lastStore("nds-shop.ndsshop");
+			if (info.Version != 3 && info.Version != _UNISTORE_VERSION) {
+				config->lastStore("universal-db.unistore");
 			}
 
-			if (info.File != "") {
+			if (info.File != "") { // Ensure to check for this.
 				if ((info.File.find("/") != std::string::npos)) {
-					config->lastStore("nds-shop.ndsshop");
+					config->lastStore("universal-db.unistore"); // It does contain a '/' which is invalid.
 				}
 			}
 		}
 	}
 
 	/* If Universal DB --> Get! */
-	if (config->lastStore() == "nds-shop.ndsshop" || config->lastStore() == "") {
-		if (access("sdmc:/3ds/NDS_Shop/stores/nds-shop.ndsshop", F_OK) != 0) {
+	if (config->lastStore() == "universal-db.unistore" || config->lastStore() == "") {
+		if (access("sdmc:/3ds/Universal-Updater/stores/universal-db.unistore", F_OK) != 0) {
 			if (checkWifiStatus()) {
 				std::string tmp = ""; // Just a temp.
-				DownloadStore("https://raw.githubusercontent.com/TheRinzler65/NDS-Shop-db/main/docs/unistore/nds-shop.unistore", -1, tmp, true, true);
-				DownloadSpriteSheet("https://raw.githubusercontent.com/TheRinzler65/NDS-Shop-db/main/docs/unistore/nds-shop-db.t3x", "nds-shop-db.t3x");
+				DownloadUniStore("https://db.universal-team.net/unistore/universal-db.unistore", -1, tmp, true, true);
+				DownloadSpriteSheet("https://db.universal-team.net/unistore/universal-db.t3x", "universal-db.t3x");
 
 			} else {
 				notConnectedMsg();
 			}
 
 		} else {
-			const StoreInfo info = GetInfo("sdmc:/3ds/NDS_Shop/stores/nds-shop.unistore", "nds-shop.unistore");
+			const UniStoreInfo info = GetInfo("sdmc:/3ds/Universal-Updater/stores/universal-db.unistore", "universal-db.unistore");
 
-			if (info.Version != 3 && info.Version != _STORE_VERSION) {
+			if (info.Version != 3 && info.Version != _UNISTORE_VERSION) {
 				if (checkWifiStatus()) {
 					std::string tmp = ""; // Just a temp.
-					DownloadStore("https://raw.githubusercontent.com/TheRinzler65/NDS-Shop-db/main/docs/unistore/nds-shop.unistoree", -1, tmp, true, true);
-					DownloadSpriteSheet("https://raw.githubusercontent.com/TheRinzler65/NDS-Shop-db/main/docs/unistore/nds-shop-db.t3x", "nds-shop-db.t3x");
+					DownloadUniStore("https://db.universal-team.net/unistore/universal-db.unistore", -1, tmp, true, true);
+					DownloadSpriteSheet("https://db.universal-team.net/unistore/universal-db.t3x", "universal-db.t3x");
 
 				} else {
 					notConnectedMsg();
@@ -125,8 +125,8 @@ void MainScreen::Draw(void) const {
 	Gui::Draw_Rect(0, 0, 400, 25, UIThemes->BarColor());
 	Gui::Draw_Rect(0, 25, 400, 1, UIThemes->BarOutline());
 
-	if (StoreUtils::store && StoreUtils::store->GetValid()) Gui::DrawStringCentered(0, 1, 0.7f, UIThemes->TextColor(), StoreUtils::store->GetStoreTitle(), 360, 0, font);
-	else Gui::DrawStringCentered(0, 1, 0.7f, UIThemes->TextColor(), Lang::get("INVALID_STORE"), 370, 0, font);
+	if (StoreUtils::store && StoreUtils::store->GetValid()) Gui::DrawStringCentered(0, 1, 0.7f, UIThemes->TextColor(), StoreUtils::store->GetUniStoreTitle(), 360, 0, font);
+	else Gui::DrawStringCentered(0, 1, 0.7f, UIThemes->TextColor(), Lang::get("INVALID_UNISTORE"), 370, 0, font);
 	config->list() ? StoreUtils::DrawList() : StoreUtils::DrawGrid();
 	GFX::DrawTime();
 	GFX::DrawBattery();
@@ -239,7 +239,7 @@ void MainScreen::Logic(u32 hDown, u32 hHeld, touchPosition touch) {
 			this->dwnldTypes.clear();
 
 			if (StoreUtils::store && StoreUtils::store->GetValid()) {
-				const std::vector<std::string> installedNames = StoreUtils::meta->GetInstalled(StoreUtils::store->GetStoreTitle(), StoreUtils::entries[StoreUtils::store->GetEntry()]->GetTitle());
+				const std::vector<std::string> installedNames = StoreUtils::meta->GetInstalled(StoreUtils::store->GetUniStoreTitle(), StoreUtils::entries[StoreUtils::store->GetEntry()]->GetTitle());
 				StoreUtils::store->SetDownloadIndex(0); // Reset to 0.
 				StoreUtils::store->SetDownloadSIndex(0);
 

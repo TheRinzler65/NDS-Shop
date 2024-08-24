@@ -38,7 +38,10 @@ struct DirEntry {
 	bool isDirectory;
 };
 
-struct StoreInfo {
+/*
+	UniStore Info struct.
+*/
+struct UniStoreInfo {
 	std::string Title;
 	std::string Author;
 	std::string URL;
@@ -54,7 +57,7 @@ bool nameEndsWith(const std::string &name, const std::vector<std::string> &exten
 void getDirectoryContents(std::vector<DirEntry> &dirContents, const std::vector<std::string> &extensionList);
 void getDirectoryContents(std::vector<DirEntry> &dirContents);
 
-std::vector<StoreInfo> GetStoreInfo(const std::string &path);
+std::vector<UniStoreInfo> GetUniStoreInfo(const std::string &path);
 
 void dirCopy(DirEntry *entry, const char *destinationPath, const char *sourcePath);
 int fcopy(const char *sourcePath, const char *destinationPath);

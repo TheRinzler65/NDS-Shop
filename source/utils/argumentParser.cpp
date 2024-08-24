@@ -46,6 +46,9 @@ ArgumentParser::ArgumentParser(const std::string &file, const std::string &entry
 	}
 }
 
+/*
+	Prepare UniStore and get valid state.
+*/
 void ArgumentParser::Load() {
 	if (access((std::string(_STORE_PATH) + this->file).c_str(), F_OK) != 0) return;
 

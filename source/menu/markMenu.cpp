@@ -91,34 +91,34 @@ void StoreUtils::MarkHandle(std::unique_ptr<StoreEntry> &entry, bool &showMark) 
 		if (hidKeysDown() & KEY_TOUCH) {
 			/* Star. */
 			if (touching(t, markBox[0])) {
-				StoreUtils::meta->SetMarks(StoreUtils::store->GetStoreTitle(), entry->GetTitle(),
-					StoreUtils::meta->GetMarks(StoreUtils::store->GetStoreTitle(), entry->GetTitle()) ^ favoriteMarks::STAR);
-				entry->SetMark(StoreUtils::meta->GetMarks(StoreUtils::store->GetStoreTitle(), entry->GetTitle()));
+				StoreUtils::meta->SetMarks(StoreUtils::store->GetUniStoreTitle(), entry->GetTitle(),
+					StoreUtils::meta->GetMarks(StoreUtils::store->GetUniStoreTitle(), entry->GetTitle()) ^ favoriteMarks::STAR);
+				entry->SetMark(StoreUtils::meta->GetMarks(StoreUtils::store->GetUniStoreTitle(), entry->GetTitle()));
 
 			/* Heart. */
 			} else if (touching(t, markBox[1])) {
-				StoreUtils::meta->SetMarks(StoreUtils::store->GetStoreTitle(), entry->GetTitle(),
-					StoreUtils::meta->GetMarks(StoreUtils::store->GetStoreTitle(), entry->GetTitle()) ^ favoriteMarks::HEART);
-				entry->SetMark(StoreUtils::meta->GetMarks(StoreUtils::store->GetStoreTitle(), entry->GetTitle()));
+				StoreUtils::meta->SetMarks(StoreUtils::store->GetUniStoreTitle(), entry->GetTitle(),
+					StoreUtils::meta->GetMarks(StoreUtils::store->GetUniStoreTitle(), entry->GetTitle()) ^ favoriteMarks::HEART);
+				entry->SetMark(StoreUtils::meta->GetMarks(StoreUtils::store->GetUniStoreTitle(), entry->GetTitle()));
 
 			/* Diamond. */
 			} else if (touching(t, markBox[2])) {
-				StoreUtils::meta->SetMarks(StoreUtils::store->GetStoreTitle(), entry->GetTitle(),
-					StoreUtils::meta->GetMarks(StoreUtils::store->GetStoreTitle(), entry->GetTitle()) ^ favoriteMarks::DIAMOND);
-				entry->SetMark(StoreUtils::meta->GetMarks(StoreUtils::store->GetStoreTitle(), entry->GetTitle()));
+				StoreUtils::meta->SetMarks(StoreUtils::store->GetUniStoreTitle(), entry->GetTitle(),
+					StoreUtils::meta->GetMarks(StoreUtils::store->GetUniStoreTitle(), entry->GetTitle()) ^ favoriteMarks::DIAMOND);
+				entry->SetMark(StoreUtils::meta->GetMarks(StoreUtils::store->GetUniStoreTitle(), entry->GetTitle()));
 
 			/* Clubs. */
 			} else if (touching(t, markBox[3])) {
-				StoreUtils::meta->SetMarks(StoreUtils::store->GetStoreTitle(), entry->GetTitle(),
-					StoreUtils::meta->GetMarks(StoreUtils::store->GetStoreTitle(), entry->GetTitle()) ^ favoriteMarks::CLUBS);
-				entry->SetMark(StoreUtils::meta->GetMarks(StoreUtils::store->GetStoreTitle(), entry->GetTitle()));
+				StoreUtils::meta->SetMarks(StoreUtils::store->GetUniStoreTitle(), entry->GetTitle(),
+					StoreUtils::meta->GetMarks(StoreUtils::store->GetUniStoreTitle(), entry->GetTitle()) ^ favoriteMarks::CLUBS);
+				entry->SetMark(StoreUtils::meta->GetMarks(StoreUtils::store->GetUniStoreTitle(), entry->GetTitle()));
 
 			/* Spade. */
 			} else if (touching(t, markBox[4])) {
-				StoreUtils::meta->SetMarks(StoreUtils::store->GetStoreTitle(), entry->GetTitle(),
-					StoreUtils::meta->GetMarks(StoreUtils::store->GetStoreTitle(), entry->GetTitle()) ^ favoriteMarks::SPADE);
+				StoreUtils::meta->SetMarks(StoreUtils::store->GetUniStoreTitle(), entry->GetTitle(),
+					StoreUtils::meta->GetMarks(StoreUtils::store->GetUniStoreTitle(), entry->GetTitle()) ^ favoriteMarks::SPADE);
 
-				entry->SetMark(StoreUtils::meta->GetMarks(StoreUtils::store->GetStoreTitle(), entry->GetTitle()));
+				entry->SetMark(StoreUtils::meta->GetMarks(StoreUtils::store->GetUniStoreTitle(), entry->GetTitle()));
 			}
 		}
 	}

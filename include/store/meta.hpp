@@ -44,22 +44,22 @@ public:
 	Meta();
 	~Meta() { this->SaveCall(); };
 
-	std::string GetUpdated(const std::string &storeName, const std::string &entry) const;
-	int GetMarks(const std::string &storeName, const std::string &entry) const;
-	bool UpdateAvailable(const std::string &storeName, const std::string &entry, const std::string &updated) const;
-	std::vector<std::string> GetInstalled(const std::string &storeName, const std::string &entry) const;
+	std::string GetUpdated(const std::string &unistoreName, const std::string &entry) const;
+	int GetMarks(const std::string &unistoreName, const std::string &entry) const;
+	bool UpdateAvailable(const std::string &unistoreName, const std::string &entry, const std::string &updated) const;
+	std::vector<std::string> GetInstalled(const std::string &unistoreName, const std::string &entry) const;
 
-	void SetUpdated(const std::string &storeName, const std::string &entry, const std::string &updated) {
-		this->metadataJson[storeName][entry]["updated"] = updated;
+	void SetUpdated(const std::string &unistoreName, const std::string &entry, const std::string &updated) {
+		this->metadataJson[unistoreName][entry]["updated"] = updated;
 	};
 
-	void SetMarks(const std::string &storeName, const std::string &entry, int marks) {
-		this->metadataJson[storeName][entry]["marks"] = marks;
+	void SetMarks(const std::string &unistoreName, const std::string &entry, int marks) {
+		this->metadataJson[unistoreName][entry]["marks"] = marks;
 	};
 
 	/* TODO: Handle this better. */
-	void SetInstalled(const std::string &storeName, const std::string &entry, const std::string &name) {
-		const std::vector<std::string> installs = this->GetInstalled(storeName, entry);
+	void SetInstalled(const std::string &unistoreName, const std::string &entry, const std::string &name) {
+		const std::vector<std::string> installs = this->GetInstalled(unistoreName, entry);
 		bool write = true;
 
 		if (!installs.empty()) {
@@ -73,22 +73,22 @@ public:
 			}
 		}
 
-		if (write) this->metadataJson[storeName][entry]["installed"] += name;
+		if (write) this->metadataJson[unistoreName][entry]["installed"] += name;
 	}
 
 	/* Remove installed state from a download list entry. */
-	void RemoveInstalled(const std::string &storeName, const std::string &entry, const std::string &name) {
-		const std::vector<std::string> installs = this->GetInstalled(storeName, entry);
+	void RemoveInstalled(const std::string &unistoreName, const std::string &entry, const std::string &name) {
+		const std::vector<std::string> installs = this->GetInstalled(unistoreName, entry);
 		if (installs.empty()) return;
 
 		for (int i = 0; i < (int)installs.size(); i++) {
 			if (installs[i] == name) {
-				this->metadataJson[storeName][entry]["installed"].erase(i);
+				this->metadataJson[unistoreName][entry]["installed"].erase(i);
 				break;
 			}
 		}
 
-		if (this->metadataJson[storeName][entry]["installed"].empty() && this->metadataJson[storeName][entry].contains("updated")) this->metadataJson[storeName][entry].erase("updated");
+		if (this->metadataJson[unistoreName][entry]["installed"].empty() && this->metadataJson[unistoreName][entry].contains("updated")) this->metadataJson[unistoreName][entry].erase("updated");
 	}
 
 	void ImportMetadata();

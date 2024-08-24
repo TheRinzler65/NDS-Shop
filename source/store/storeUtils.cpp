@@ -181,7 +181,7 @@ void StoreUtils::ResetAll() {
 void StoreUtils::RefreshUpdateAVL() {
 	for (int i = 0; i < (int)StoreUtils::entries.size(); i++) {
 		if (StoreUtils::entries[i]) {
-			StoreUtils::entries[i]->SetUpdateAvl(StoreUtils::meta->UpdateAvailable(StoreUtils::store->GetStoreTitle(), StoreUtils::entries[i]->GetTitle(), StoreUtils::entries[i]->GetLastUpdated()));
+			StoreUtils::entries[i]->SetUpdateAvl(StoreUtils::meta->UpdateAvailable(StoreUtils::store->GetUniStoreTitle(), StoreUtils::entries[i]->GetTitle(), StoreUtils::entries[i]->GetLastUpdated()));
 		}
 	}
 }
@@ -209,7 +209,7 @@ void StoreUtils::AddToQueue(int index, const std::string &entry, const std::stri
 		}
 	}
 
-	QueueSystem::AddToQueue(Script, StoreUtils::store->GetIconEntry(index), entry, StoreUtils::store->GetStoreTitle(), entryName, lUpdated); // Here we add this to the Queue at the end.
+	QueueSystem::AddToQueue(Script, StoreUtils::store->GetIconEntry(index), entry, StoreUtils::store->GetUniStoreTitle(), entryName, lUpdated); // Here we add this to the Queue at the end.
 }
 
 /*
@@ -221,12 +221,13 @@ void StoreUtils::AddAllToQueue() {
 			if (StoreUtils::entries[storeEntry]) { // Ensure pointer is valid.
 
 				const std::vector<std::string> entryNames = StoreUtils::store->GetDownloadList(StoreUtils::entries[storeEntry]->GetEntryIndex()); // Return a vector of all Download Entries.
-				const std::vector<std::string> installedNames = StoreUtils::meta->GetInstalled(StoreUtils::store->GetStoreTitle(), StoreUtils::entries[storeEntry]->GetTitle()); // Return a vector from all installed entries.
+				const std::vector<std::string> installedNames = StoreUtils::meta->GetInstalled(StoreUtils::store->GetUniStoreTitle(), StoreUtils::entries[storeEntry]->GetTitle()); // Return a vector from all installed entries.
 
 				if (!entryNames.empty() && !installedNames.empty()) { // Ensure both aren't empty.
 					for (int i = 0; i < (int)entryNames.size(); i++) {
 						for (int i2 = 0; i2 < (int)installedNames.size(); i2++) {
-							if (entryNames[i] == installedNames[i2]) { 
+							if (entryNames[i] == installedNames[i2]) { // If name matches with installed title, add to queue.
+								/* Add to Queue. */
 								StoreUtils::AddToQueue(entries[storeEntry]->GetEntryIndex(), entryNames[i2], entries[storeEntry]->GetTitle(), entries[storeEntry]->GetLastUpdated());
 							}
 						}
