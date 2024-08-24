@@ -76,7 +76,7 @@ MainScreen::MainScreen() {
 			if (checkWifiStatus()) {
 				std::string tmp = ""; // Just a temp.
 				DownloadUniStore("https://github.com/TheRinzler65/NDS-Shop-db/raw/main/docs/unistore/nds-shop.unistore", -1, tmp, true, true);
-				DownloadSpriteSheet("https://github.com/TheRinzler65/NDS-Shop-db/raw/main/docs/unistore/nds-shop-db.t3x", "nds-shop.t3x");
+				DownloadSpriteSheet("https://github.com/TheRinzler65/NDS-Shop-db/raw/main/docs/unistore/nds-shop-db.t3x", "nds-shop-db.t3x");
 
 			} else {
 				notConnectedMsg();

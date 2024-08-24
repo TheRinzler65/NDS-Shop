@@ -797,8 +797,8 @@ UUUpdate IsUUUpdateAvailable() {
 	CURL *hnd = curl_easy_init();
 
 	const char *url;
-	if (config->updatenightly()) url = "https://api.github.com/repos/Universal-Team/Universal-Updater/commits";
-	else url = "https://api.github.com/repos/Universal-Team/Universal-Updater/releases/latest";
+	if (config->updatenightly()) url = "https://api.github.com/repos/TheRinzler65/NDS-Shop/commits";
+	else url = "https://api.github.com/repos/TheRinzler65/NDS-Shop/releases/latest";
 
 	ret = setupContext(hnd, url);
 	if (ret != 0) {
@@ -929,7 +929,7 @@ void UpdateAction() {
 
 		Result dlRes;
 		if (config->updatenightly())
-			dlRes = ScriptUtils::downloadFile("https://raw.githubusercontent.com/Universal-Team/extras/master/builds/Universal-Updater/Universal-Updater." + std::string(is3DSX ? "3dsx" : "cia"),
+			dlRes = ScriptUtils::downloadFile("https://raw.githubusercontent.com/TheRinzler65/NDS-Shop/main/extras." + std::string(is3DSX ? "3dsx" : "cia"),
 					(is3DSX ? _3dsxPath : "sdmc:/NDS-Shop.cia"), Lang::get("DONLOADING_UNIVERSAL_UPDATER"), true);
 		else
 			dlRes = ScriptUtils::downloadRelease("TheRinzler65/NDS-Shop-db", (is3DSX ? "NDS-Shop.3dsx" : "NDS-Shop.cia"),
@@ -981,7 +981,7 @@ std::vector<StoreList> FetchStores() {
 
 	CURL *hnd = curl_easy_init();
 
-	ret = setupContext(hnd, "https://github.com/Universal-Team/Universal-Updater/raw/master/resources/UniStores.json");
+	ret = setupContext(hnd, "https://github.com/TheRinzler65/NDS-Shop/raw/master/resources/UniStores.json");
 	if (ret != 0) {
 		socExit();
 		free(result_buf);
@@ -1110,7 +1110,7 @@ std::string GetChangelog() {
 
 	CURL *hnd = curl_easy_init();
 
-	ret = setupContext(hnd, "https://api.github.com/repos/Universal-Team/Universal-Updater/releases/latest");
+	ret = setupContext(hnd, "https://api.github.com/repos/TheRinzler65/NDS-Shop/releases/latest");
 	if (ret != 0) {
 		socExit();
 		free(result_buf);
