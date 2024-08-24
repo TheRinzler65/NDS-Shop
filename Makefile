@@ -106,6 +106,7 @@ ICON		:=	app/icon.png
 BNR_IMAGE	:=	app/banner.png
 BNR_AUDIO	:=	app/BannerAudio.wav
 RSF_FILE	:=	app/build-cia.rsf
+EXTRAS := extras
 
 #---------------------------------------------------------------------------------
 # options for code generation
@@ -226,8 +227,16 @@ endif
 .PHONY: all citra clean cppcheck
 
 #---------------------------------------------------------------------------------
-all: $(BUILD) $(GFXBUILD) $(DEPSDIR) $(ROMFS_T3XFILES) $(T3XHFILES)
+all: $(BUILD) $(GFXBUILD) $(DEPSDIR) $(ROMFS_T3XFILES) $(T3XHFILES) $(EXTRAS)
 	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
+	@mv -f $(OUTPUT).cia $(EXTRAS)/$(TARGET).cia
+	@mv -f $(OUTPUT).smdh $(EXTRAS)/$(TARGET).smdh
+	@mv -f $(OUTPUT).3dsx $(EXTRAS)/$(TARGET).3dsx
+	@mv -f $(OUTPUT).elf $(EXTRAS)/$(TARGET).elf
+
+
+$(EXTRAS):
+	@mkdir -p $@
 
 #---------------------------------------------------------------------------------
 citra: $(BUILD) $(GFXBUILD) $(DEPSDIR) $(ROMFS_T3XFILES) $(T3XHFILES)
@@ -236,7 +245,7 @@ citra: $(BUILD) $(GFXBUILD) $(DEPSDIR) $(ROMFS_T3XFILES) $(T3XHFILES)
 #------------------------------------------------------------------------------
 clean:
 	@echo clean ...
-	@rm -fr $(BUILD) $(TARGET).elf
+	@rm -fr $(BUILD) $(TARGET).3dsx $(TARGET).smdh $(TARGET).elf $(TARGET).cia $(EXTRAS)
 	@rm -fr $(OUTDIR)
 
 

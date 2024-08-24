@@ -2,11 +2,9 @@
 *.bin
 *.d
 *.o
+*build
 *.smdh
 *.elf
-*.cia
-*.3dsx
-*build
 *.map
 *.lst
 .vscode
