@@ -1,6 +1,6 @@
 BasicInfo:
-  Title                   : "UNIV-UPDATER"
-  ProductCode             : "CTR-H-UVUP"
+  Title                   : "NDS-Shop"
+  ProductCode             : "CTR-H-NDSS"
   Logo                    : Homebrew # Nintendo / Licensed / Distributed / iQue / iQueForSystem
 
 RomFs:
@@ -8,7 +8,7 @@ RomFs:
 
 TitleInfo:
   Category                : Application
-  UniqueId                : 0x43917
+  UniqueId                : 0x8C24F
 
 Option:
   UseOnSD                 : true # true if App is to be installed to SD
